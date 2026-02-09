@@ -1,0 +1,41 @@
+# See https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#package-ecosystem
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      # We probably want to do special PRs to handle these dependency bumps.
+      - dependency-name: sigs.k8s.io/karpenter
+      - dependency-name: sigs.k8s.io/cluster-api
+    groups:
+      k8s-go-deps:
+        patterns:
+          - "k8s.io/*"
+          - "sigs.k8s.io/*"
+          - "knative.dev/*"
+        exclude-patterns:
+          - "sigs.k8s.io/karpenter"
+          - "sigs.k8s.io/cluster-api"
+      go-deps:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "k8s.io/*"
+          - "sigs.k8s.io/*"
+          - "knative.dev/*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
